@@ -17,10 +17,12 @@ Writer read unencrypted files or values and encrypt them via ansible-vault
 
 ### Reader
 > it simulates a part of a process triggered possibly via CI which need to decrypt secret
+
 Reader read encrypted files or values and decrypt them via ansible-vault
 
 ### Consumer
 > it simulates another part of a process triggered possibly via CI which need to consume decrypted secret
+
 Consumer read decrypted files or values and use it against target via ansible
 
 ### Target
