@@ -1,0 +1,35 @@
+version: "3.2"
+volumes:
+  encrypted:
+  decrypted:
+services:
+  target:
+    build: ./target
+  writer:
+    image: rainist/recipe-note
+    working_dir: /var/writer
+    volumes:
+      - ./pw-files:/var/writer/pw-files:ro
+      - ./writer:/var/writer/to-be-encrypted
+      - encrypted:/var/writer/encrypted
+    command: sh -c 'sleep 0.2 && ansible-vault encrypt --vault-password-file ./pw-files/vault-pass.txt --output=encrypted/encrypted-var.yml to-be-encrypted/unencrypted-var.yml'
+  reader:
+    image: rainist/recipe-note
+    working_dir: /var/reader
+    volumes:
+      - ./pw-files:/var/reader/pw-files:ro
+      - encrypted:/var/reader/encrypted
+      - decrypted:/var/reader/decrypted
+    command: sh -c 'sleep 0.4 && ansible-vault decrypt --vault-password-file ./pw-files/vault-pass.txt --output=decrypted/var.yml encrypted/encrypted-var.yml'
+    depends_on:
+      - writer
+  consumer:
+    build: ./consumer
+    depends_on:
+      - reader
+      - target
+    volumes:
+      - ./consumer:/var/consumer/ansible
+      - decrypted:/var/consumer/decrypted
+    working_dir: /var/consumer/ansible
+    command: sh -c 'sleep 2 && cat ../decrypted/var.yml && ansible-playbook -i hosts main.yml'
