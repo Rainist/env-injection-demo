@@ -1,12 +1,14 @@
 # env-injection-demo
 
-## Why?
+## Goals
+Create a complete cycle (especially within CI) that can create/manage/use env/config/secret securely for teams leveriging VCS such as git.
 
-- to prove injecting envs to VMs without compromising security
-- to document how to do all
+## Why?
+- to prove injecting ENVs to VMs without compromising security
+- to document how to do all the stuff to achieve the goal
 
 ## How it works
-use docker-compose to simulate different hosts doing different things at different point of times
+Use docker-compose to simulate different hosts doing different things at different point of times
 
 ### Writer
 > it simulates a process of encrypting secrets
@@ -35,4 +37,4 @@ It's a minimal os + tools sets that represent regular VM listening to ssh reques
 `$ docker-compose up`
 
 ## WIP
-still significant missing parts exists and more will be added soon
+still significant missing parts exist and more will be added soon
